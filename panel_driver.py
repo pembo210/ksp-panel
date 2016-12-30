@@ -51,7 +51,7 @@ def formatAlt(alt):
 	return output
 
 query = (
-	"http://192.168.15.88:8085/telemachus/datalink?Antenna=p.paused&RCS=v.rcsValue&"
+	"http://192.168.1.185:8085/telemachus/datalink?Antenna=p.paused&RCS=v.rcsValue&"
 	"SAS=v.sasValue&lights=v.lightValue&brakes=v.brakeValue&gear=v.gearValue&pe=o.PeA"
 	"&ap=o.ApA&terrainHeight=v.heightFromTerrain&ASL=v.altitude&maxElec=r.resourceMax["
 	"ElectricCharge]&currElec=r.resource[ElectricCharge]&stCurrLiq=r.resourceCurrent["
@@ -141,4 +141,12 @@ while 1:
 		
 	except KeyError:
 		# So program doesn't hang on NaN values
+		pass
+
+	except ZeroDivisionError:
+		# If fuel level is zero it will throw this
+		pass
+	
+	except ValueError:
+		# So it doesn't hang on NaN values
 		pass
