@@ -26,6 +26,7 @@ GPIO.setmode(GPIO.BCM)
 
 # Instantiate I2C seven segment from Adafruit library
 altimeter = SevenSegment.SevenSegment()
+altimeter.begin()
 
 # Instantiate display classes from display_tools library
 lcd_display = display_tools.LCD_16x2(18, 23, 24, 25, 12, 16)
