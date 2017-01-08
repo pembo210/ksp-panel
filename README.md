@@ -11,7 +11,7 @@ several LED indicator lights for displaying flight system status. The output
 is based on two libraries. The I2C seven segment display is driven by a [library
 written by Adafruit](https://github.com/adafruit/Adafruit_Python_LED_Backpack). All other outputs are driven by display_tools, a library
 I wrote that provides classes for several types of peripherals. The LCD class
-in display_tools was modified from a [script](www.raspberrypi-spy.co.uk/2012/07/16x2-lcd-module-control-using-python/) by Matt at raspberrypi-spy.co.uk.
+in display_tools was modified from a [script](https://www.raspberrypi-spy.co.uk/2012/07/16x2-lcd-module-control-using-python/) by Matt at raspberrypi-spy.co.uk.
 The data to send to the peripherals is retrieved by using the Telemachus mod
 for KSP, which creates a webserver from the machine running the game that
 accepts API calls and returns flight data.
