@@ -124,6 +124,8 @@ while 1:
 
 			# Display radar altitude on seven segment if alt is 4 digits or less
 			# Digit length detection is built into Adafruit library
+			if telemetry['terrainHeight'] == -1:
+				telemetry['terrainHeight'] = 10000 # Set to 5 digit number so it doesn't display -1
 			altimeter.clear()
 			altimeter.print_number_str(telemetry['terrainHeight'])
 			altimeter.write_display()
@@ -183,4 +185,8 @@ while 1:
 	except KeyError:
 		# The game produces NaN values during scene changes, this prevents panel 
 		# from halting during transitions
+		pass
+
+	except ValueError:
+		# Passes NaN values, as above
 		pass
