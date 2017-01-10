@@ -9,6 +9,7 @@ the game that can return information from the current flight. I also wrote a pat
 that enables telemachus datalinks from all control pods in the game. """
 
 from __future__ import division
+from __future__ import print_function
 from urllib2 import urlopen
 from Adafruit_LED_Backpack import SevenSegment
 import time
@@ -23,6 +24,7 @@ device = 0x20 # I2C port expander address
 GPA = 0x14 # GPA output register
 
 GPIO.setmode(GPIO.BCM)
+GPIO.setup(20, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 # Instantiate I2C seven segment from Adafruit library
 altimeter = SevenSegment.SevenSegment()
@@ -34,6 +36,10 @@ fuelLevel = display_tools.bargraph_LED(4, 17, 27, 22, 5, 6, 13, 19, 26, 21)
 
 # Setting GPA pins to outputs
 bus.write_byte_data(device, 0x00, 0x00)
+
+def shutdown_callback(channel):
+	# Shuts the system down on the push of a button on side of panel
+	os.system('poweroff')
 
 def getPercent(max, current):
 	# Take current value and max value and calculate percentage
@@ -69,6 +75,9 @@ def formatAlt(alt):
 		output = '%.1f Gm' % alt
 
 	return output
+
+# Add callback for shutdown button
+GPIO.add_event_detect(20, GPIO.FALLING, callback = shutdown_callback)
 
 # The API call string that returns flight info
 query = (
@@ -124,8 +133,8 @@ while 1:
 
 			# Display radar altitude on seven segment if alt is 4 digits or less
 			# Digit length detection is built into Adafruit library
-			if telemetry['terrainHeight'] == -1:
-				telemetry['terrainHeight'] = 10000 # Set to 5 digit number so it doesn't display -1
+			if telemetry['terrainHeight'] == '-1':
+				telemetry['terrainHeight'] = '10000' # Set to 5 digit number so it doesn't display -1
 			altimeter.clear()
 			altimeter.print_number_str(telemetry['terrainHeight'])
 			altimeter.write_display()
