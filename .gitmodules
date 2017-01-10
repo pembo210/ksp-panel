@@ -1,0 +1,3 @@
+[submodule "Adafruit_Python_PureIO"]
+	path = include/Adafruit_Python_PureIO
+	url = https://github.com/adafruit/Adafruit_Python_PureIO
