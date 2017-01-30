@@ -75,7 +75,7 @@ void loop() {
   rcsCurrent = digitalRead(rcsToggle);
   lightCurrent = digitalRead(lightToggle);
   gearCurrent = digitalRead(gearToggle);
-  brakeCurrent = digitalRead(brakeCurrent);
+  brakeCurrent = digitalRead(brakeToggle);
 
   updatePushbutton(AG1, 1);
   updatePushbutton(AG2, 2);
@@ -87,12 +87,14 @@ void loop() {
   updatePushbutton(AG8, 8);
   updatePushbutton(AG9, 9);
   updatePushbutton(AG10,10);
+  updatePushbutton(abortPush, 11);
+  updatePushbutton(stagePush, 12);
   
-  updateToggle(sasCurrent, sasLast, 11);
-  updateToggle(rcsCurrent, rcsLast, 12);
-  updateToggle(lightCurrent, lightLast, 13);
-  updateToggle(gearCurrent, gearLast, 14);
-  updateToggle(brakeCurrent, brakeLast, 15);
+  updateToggle(sasCurrent, sasLast, 13);
+  updateToggle(rcsCurrent, rcsLast, 14);
+  updateToggle(lightCurrent, lightLast, 15);
+  updateToggle(gearCurrent, gearLast, 16); 
+  updateToggle(brakeCurrent, brakeLast, 17);
   
   updateSlider(throttlePot);
 
@@ -121,6 +123,7 @@ void updateToggle(int current, int last, int joystickButton) {
 
 void updateSlider(int pin) {
   int throttle = analogRead(pin);
-  if (throttle < 45) {throttle = 0;}
+  if (throttle < 50) {throttle = 0;}
   Joystick.sliderLeft(throttle);
 }
+
