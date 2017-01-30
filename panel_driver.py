@@ -19,6 +19,8 @@ import display_tools
 import smbus
 import RPi.GPIO as GPIO
 
+HEADLESS = True # Set to true if no moniter attached
+
 bus = smbus.SMBus(1)  
 device = 0x20 # I2C port expander address
 GPA = 0x14 # GPA output register
@@ -39,6 +41,12 @@ bus.write_byte_data(device, 0x00, 0x00)
 
 def shutdown_callback(channel):
 	# Shuts the system down on the push of a button on side of panel
+	bus.write_byte_data(device, GPA, 00000000) # Shut off all LEDs
+	altimeter.clear() # Wipe seven segment display
+	altimeter.write_display() 
+	lcd_display.dispMessage(" ", lcd_display.LINE1) # Wipe LCD display
+	lcd_display.dispMessage(" ", lcd_display.LINE2)
+	fuelLevel.display(0) # Turn off bargraph
 	os.system('poweroff')
 
 def getPercent(max, current):
@@ -163,26 +171,27 @@ while 1:
 				FuelWarnLED = 0
 			
 			# Print values and states to command line
-			os.system('clear')
+			if not HEADLESS:
+				os.system('clear')
 
-			print('Resource Levels:\n')
-			print('Electric charge: %r%%' % telemetry['percElec'])
-			print('Stage liquid fuel: %r%%' % telemetry['stPercLiq'])
-			print('\n')
+				print('Resource Levels:\n')
+				print('Electric charge: %r%%' % telemetry['percElec'])
+				print('Stage liquid fuel: %r%%' % telemetry['stPercLiq'])
+				print('\n')
 			
-			print('Ship Systems:\n')
-			print('SAS:', telemetry['SAS'])
-			print('RCS:', telemetry['RCS'])
-			print('Lights:', telemetry['lights'])
-			print('Gear:', telemetry['gear'])
-			print('Brakes:', telemetry['brakes'])
-			print('\n')
+				print('Ship Systems:\n')
+				print('SAS:', telemetry['SAS'])
+				print('RCS:', telemetry['RCS'])
+				print('Lights:', telemetry['lights'])
+				print('Gear:', telemetry['gear'])
+				print('Brakes:', telemetry['brakes'])
+				print('\n')
 		
-			print('Orbit Information:\n')
-			print('Apoapsis:', telemetry['ap'], 'm')
-			print('Periapsis:', telemetry['pe'], 'm')
-			print('Height from terrain:', telemetry['terrainHeight'], 'm')
-			print('Sea level altitude:', telemetry['ASL'], 'm')
+				print('Orbit Information:\n')
+				print('Apoapsis:', telemetry['ap'], 'm')
+				print('Periapsis:', telemetry['pe'], 'm')
+				print('Height from terrain:', telemetry['terrainHeight'], 'm')
+				print('Sea level altitude:', telemetry['ASL'], 'm')
 			
 			# Take all LED state values and concatenate into one binary number to send to chip
 			I2C_DATA = (FuelWarnLED << 6) + (ElecWarnLED << 5) + (SasLED << 4) + (RcsLED << 3) + (GearLED << 2) + (LightLED << 1) + BrakeLED
