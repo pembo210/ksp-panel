@@ -3,6 +3,9 @@ This repository contains the code necessary to drive a mission control panel
 for the space simulation game Kerbal Space Program. The panel consists of a
 Raspberry Pi and a Teensy.
 
+![picture](http://imgur.com/zGNdsP1)
+![picture](http://imgur.com/lyHuAQ8)
+
 ## Raspberry Pi
 The Raspberry Pi handles the outputs of the panel. The outputs consist of an
 LCD display for displaying orbital information, a 10 segment bargraph LED for
